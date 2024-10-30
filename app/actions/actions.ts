@@ -1,13 +1,15 @@
 'use server';
 
-import sql from "../utils/db_conn";
+import { UserFormData } from "@/app/types/objects";
+import { registerUser } from "../auth/utils/register";
 
 
-export async function create(formData: FormData) {
+export async function handleSubmit(formData:FormData) {
+    const userFormData: UserFormData = {
+        username: formData.get('username')?.toString() || '',
+        email: formData.get('email')?.toString() || '',
+        password: formData.get('password')?.toString() || '',
+      };
 
-	// Create the comments table if it does not exist
-	await sql("CREATE TABLE IF NOT EXISTS comments (comment TEXT)");
-	const comment = formData.get("comment");
-	// Insert the comment from the form into the Postgres (powered by Neon)
-	await sql("INSERT INTO comments (comment) VALUES ($1)", [comment]);
+    await registerUser(userFormData)
 }
