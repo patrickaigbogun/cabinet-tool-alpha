@@ -1,27 +1,24 @@
+'use client';
+
 import { SignIn } from "@phosphor-icons/react/dist/ssr";
-import { create } from "../actions/actions";
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
+    const router = useRouter()
 
 	return (
-		<form
-			action={create}
+		<section
 			className="bg-white h-screen w-screen flex flex-col items-center justify-center"
 		>
 			<div className="flex flex-col">
-				<input
-					type="text"
-					name="comment"
-					placeholder="Write a comment"
-					className="rounded px-4 py-2 border outline-none focus:border-black"
-				/>
 				<button
-					type="submit"
+					type="button"
 					className="max-w-max px-3 py-1 mt-5 rounded bg-black text-white"
+					onClick={()=>router.push('/auth/register')}
 				>
 					<span>Login </span><SignIn size={32} />
 				</button>
 			</div>
-		</form>
+		</section>
 	);
 }

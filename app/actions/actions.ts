@@ -1,8 +1,9 @@
+'use server';
+
 import sql from "../utils/db_conn";
 
 
 export async function create(formData: FormData) {
-	"use server";
 
 	// Create the comments table if it does not exist
 	await sql("CREATE TABLE IF NOT EXISTS comments (comment TEXT)");

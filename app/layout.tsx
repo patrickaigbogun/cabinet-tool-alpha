@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../globals.css";
+import "./globals.css";
 
 
 
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body>
+			<body className="font-bold" >
 				{children}
 			</body>
 		</html>
