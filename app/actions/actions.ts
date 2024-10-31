@@ -2,7 +2,7 @@
 
 import { LoginFormData, RegisterFormData } from "@/app/types/objects";
 import { registerUser } from "../auth/utils/register";
-import { loginUser } from "../auth/utils/login";
+// import { loginUser } from "../auth/utils/login";
 
 
 export async function handleRegister(formData: FormData) {
@@ -17,11 +17,3 @@ export async function handleRegister(formData: FormData) {
 
 
 
-export async function handleLogin(formData: FormData) {
-	const userFormData: LoginFormData = {
-		email: formData.get('email')?.toString() || '',
-		password: formData.get('password')?.toString() || '',
-	};
-
-	await loginUser(userFormData)
-}

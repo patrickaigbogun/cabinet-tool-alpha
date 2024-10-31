@@ -1,21 +1,27 @@
-
+'use server';
 
 import { LoginFormData } from "@/app/types/objects";
 import sql from "@/app/utils/db_conn";
 import bcrypt from "bcrypt";
-import { redirect } from "next/navigation";
+import { sign } from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_key';
 
 export async function loginUser(userFormData: LoginFormData) {
     console.log('Logging you in:', userFormData);
 
     try {
         if (!userFormData.email || !userFormData.password) {
-            throw new Error('All fields are required');
+            return { 
+                success: false, 
+                error: 'All fields are required' 
+            };
         }
 
         // Retrieve user record from the database
         const userRecord = await sql`
-            SELECT email, password 
+            SELECT user_id, email, password 
             FROM users 
             WHERE email = ${userFormData.email}
             LIMIT 1
@@ -23,23 +29,60 @@ export async function loginUser(userFormData: LoginFormData) {
 
         // Check if user exists
         if (userRecord.length === 0) {
-            throw new Error('Invalid email or password');
+            return { 
+                success: false, 
+                error: 'Invalid email or password' 
+            };
         }
 
-        const storedHashedPassword = userRecord[0].password;
+        const user = userRecord[0];
+        const storedHashedPassword = user.password;
 
         // Compare provided password with stored hashed password
         const isPasswordMatch = await bcrypt.compare(userFormData.password, storedHashedPassword);
 
-        if (isPasswordMatch) {
-            // Redirect to the profile page on successful login
-            redirect('/profile');
-        } else {
-            throw new Error('Invalid email or password');
+        if (!isPasswordMatch) {
+            return { 
+                success: false, 
+                error: 'Invalid email or password' 
+            };
         }
 
-    } catch (error:any) {
+        // Generate JWT token
+        const token = sign(
+            { 
+                userId: user.user_id, 
+                email: user.email 
+            }, 
+            JWT_SECRET, 
+            { expiresIn: '14d' }
+        );
+
+        // Set token in HTTP-only cookie
+
+        const cookieStore = await cookies()
+        cookieStore.set('auth_token', token, {
+            name: 'sessioncookie',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 14 * 24 * 60 * 60, // 14 days in seconds
+            path: '/'
+        });
+
+        return { 
+            success: true,
+            user: {
+                user_id: user.user_id,
+                email: user.email
+            }
+        };
+
+    } catch (error: any) {
         console.error('Login failed:', error.message);
-        throw new Error('Failed to log in: ' + error.message);
+        return { 
+            success: false, 
+            error: 'Failed to log in: ' + error.message 
+        };
     }
 }
