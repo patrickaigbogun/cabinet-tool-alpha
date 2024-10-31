@@ -1,12 +1,12 @@
 'use server';
 
-import { UserFormData } from "@/app/types/objects";
+import { RegisterFormData } from "@/app/types/objects";
 import sql from "../../utils/db_conn";
 import bcrypt from "bcrypt";
 
 
 
-export async function registerUser(userFormData: UserFormData) {
+export async function registerUser(userFormData: RegisterFormData) {
 	console.log('Registering user:', userFormData);
 
 
@@ -44,7 +44,9 @@ export async function registerUser(userFormData: UserFormData) {
             LIMIT 1
         `;
 
-		return { success: true, user: newUser[0] };
+		
+
+		
 
 
 	} catch (error: any) {
@@ -64,8 +66,6 @@ export async function registerUser(userFormData: UserFormData) {
 			detail: error.detail,
 			message: error.message
 		});
-
-		throw new Error('Failed to register new user');
 
 	}
 
