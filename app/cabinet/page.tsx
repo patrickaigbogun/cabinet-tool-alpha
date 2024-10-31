@@ -20,7 +20,7 @@ export default function CabinetPage() {
 		e.preventDefault();
 		setIsDragging(false);
 		console.log('Dropped files');
-		
+
 	};
 
 	const handleClick = useCallback(() => {
@@ -43,10 +43,10 @@ export default function CabinetPage() {
 	}, []);
 
 
-  return (
-    <div
+	return (
+		<div
 			id="drop-target"
-			className={` ${ isDragging ? 'border-purple-400 bg-purple-950/10 animate-pulse duration-75' : 'border-gray-400'}, 'flex items-center justify-center border-2 border-dashed rounded-lg p-4 font-bold text-center h-72' `}
+			className={` ${isDragging ? 'border-purple-400 bg-purple-950/10 animate-pulse duration-75' : 'border-gray-400'}, 'flex items-center justify-center border-2 border-dashed rounded-lg p-4 font-bold text-center h-72' `}
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
@@ -57,5 +57,5 @@ export default function CabinetPage() {
 			</p>
 
 		</div>
-  )
+	)
 }

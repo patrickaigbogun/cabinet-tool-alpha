@@ -1,4 +1,4 @@
-import { handleRegister } from "@/app/actions/actions";
+import { handleRegister } from "@/app/actions/server/actions";
 
 
 

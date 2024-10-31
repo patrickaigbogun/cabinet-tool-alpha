@@ -1,7 +1,7 @@
 'use server';
 
 import { LoginFormData, RegisterFormData } from "@/app/types/objects";
-import { registerUser } from "../auth/utils/register";
+import { registerUser } from "@/app/auth/utils/register";
 // import { loginUser } from "../auth/utils/login";
 
 
