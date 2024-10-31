@@ -61,7 +61,7 @@ export async function loginUser(userFormData: LoginFormData) {
         // Set token in HTTP-only cookie
 
         const cookieStore = await cookies()
-        cookieStore.set('auth_token', token, {
+        cookieStore.set('sessioncookie', token, {
             name: 'sessioncookie',
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
