@@ -21,9 +21,9 @@ export interface UserFileStore {
 
 export interface UserFileDb {
 	fileId: string;
-	userId: string;
+	userId: number;
 	originalName: string;
-	fileUrl: string;
+	fileUrl: string |void ;
 	fileSize: number;
 	mimeType: string;
 	uploadedAt: Date;
